@@ -6,8 +6,16 @@ from backend.app.models.meeting import Meeting
 
 
 def optimize_schedule(db: Session):
-    meetings = db.query(Meeting).all()
-    rooms = db.query(Room).all()
+    meetings = (
+    db.query(Meeting)
+    .filter(Meeting.is_completed == False)
+    .all()
+    )
+    rooms = (
+    db.query(Room)
+    .filter(Room.is_active == True)
+    .all()
+    )
 
     if not meetings or not rooms:
         return []

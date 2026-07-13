@@ -8,20 +8,6 @@ app = FastAPI(
     title=settings.APP_NAME
 )
 
-
-@app.get("/")
-def health_check():
-    return {
-        "message": "Meeting Room Optimizer API",
-        "status": "healthy"
-    }
-
-
-app.include_router(
-    api_router,
-    prefix="/api/v1"
-)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -29,3 +15,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(
+    api_router,
+    prefix="/api/v1"
+)
+

@@ -4,7 +4,7 @@ from fastapi import HTTPException
 
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
-
+from backend.app.models.meeting import Meeting
 from backend.app.schemas.meeting import (
     MeetingCreate,
     MeetingResponse
@@ -97,3 +97,29 @@ def remove_meeting(
         "message": "Meeting deleted"
     }
 
+@router.patch("/{meeting_id}/complete")
+def complete_meeting(
+    meeting_id: int,
+    db: Session = Depends(get_db)
+):
+
+    meeting = (
+        get_meeting_by_id(
+            db,
+            meeting_id
+        )
+    )
+
+    if not meeting:
+        raise HTTPException(
+            status_code=404,
+            detail="Meeting not found"
+        )
+
+    meeting.is_completed = True
+
+    db.commit()
+
+    return {
+        "message": "Meeting completed"
+    }

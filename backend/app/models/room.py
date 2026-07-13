@@ -1,13 +1,12 @@
-from sqlalchemy import Integer
+from sqlalchemy import Integer,Column
 from sqlalchemy import String
 from sqlalchemy import JSON
-
 from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import mapped_column 
 from sqlalchemy.orm import relationship
 
 from backend.app.core.database import Base
-
+from sqlalchemy import Boolean
 
 class Room(Base):
     __tablename__ = "rooms"
@@ -30,12 +29,15 @@ class Room(Base):
     building: Mapped[str] = mapped_column(
         String
     )
-
-    equipment: Mapped[dict] = mapped_column(
-        JSON
+    equipment = mapped_column(JSON)  
+    
+    is_active: Mapped[bool] = mapped_column(
+    Boolean,
+    default=True
     )
 
     bookings = relationship(
         "Booking",
         back_populates="room"
     )
+    

@@ -14,6 +14,7 @@ class RoomCreate(RoomBase):
 
 class RoomResponse(RoomBase):
     id: int
+    is_active: bool
 
     model_config = ConfigDict(
         from_attributes=True

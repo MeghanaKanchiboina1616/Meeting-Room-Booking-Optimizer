@@ -12,6 +12,7 @@ from backend.app.schemas.room import (
 )
 import os
 import tempfile
+from backend.app.aws.s3 import upload_file
 
 from fastapi import UploadFile
 from fastapi import File
@@ -121,6 +122,62 @@ def delete_room(
         "message": "Room deleted"
     }
 
+@router.patch(
+    "/{room_id}/disable"
+)
+def disable_room(
+    room_id: int,
+    db: Session = Depends(get_db)
+):
+
+    room = (
+        db.query(Room)
+        .filter(Room.id == room_id)
+        .first()
+    )
+
+    if not room:
+        raise HTTPException(
+            status_code=404,
+            detail="Room not found"
+        )
+
+    room.is_active = False
+
+    db.commit()
+
+    db.refresh(room)
+
+    return room
+
+
+@router.patch(
+    "/{room_id}/enable"
+)
+def enable_room(
+    room_id: int,
+    db: Session = Depends(get_db)
+):
+
+    room = (
+        db.query(Room)
+        .filter(Room.id == room_id)
+        .first()
+    )
+
+    if not room:
+        raise HTTPException(
+            status_code=404,
+            detail="Room not found"
+        )
+
+    room.is_active = True
+
+    db.commit()
+    db.refresh(room)
+    return room
+    
+
 @router.post("/upload")
 def upload_rooms(
     file: UploadFile = File(...),
@@ -147,11 +204,15 @@ def upload_rooms(
         temp_path = temp.name
 
     try:
-
+        upload_file(
+        temp_path,
+        file.filename,
+        )    
         result = process_room_upload(
             temp_path,
             db,
         )
+        
 
         return result
 
