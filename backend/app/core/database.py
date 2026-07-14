@@ -12,6 +12,7 @@ engine = create_engine(
     echo=settings.DEBUG
 )
 
+
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
