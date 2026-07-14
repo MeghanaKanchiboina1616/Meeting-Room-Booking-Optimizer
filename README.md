@@ -272,7 +272,7 @@ meeting-room-optimizer/
 ## Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/MeghanaKanchiboina1616/Meeting-Room-Booking-Optimizer
 
 cd meeting-room-optimizer
 ```
