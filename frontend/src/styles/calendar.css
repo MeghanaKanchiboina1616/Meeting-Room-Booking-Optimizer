@@ -1,0 +1,27 @@
+.rbc-calendar {
+  background: white;
+  border-radius: 16px;
+}
+
+.rbc-toolbar {
+  margin-bottom: 20px;
+}
+
+.rbc-month-view {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rbc-header {
+  background: #f8fafc;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.rbc-today {
+  background: #eff6ff !important;
+}
+
+.rbc-off-range-bg {
+  background: #f8fafc;
+}

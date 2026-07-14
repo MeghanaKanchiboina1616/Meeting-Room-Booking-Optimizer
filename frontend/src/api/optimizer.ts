@@ -1,6 +1,8 @@
-import api from "./axios";
+import axios from "axios";
 
-export const optimizeSchedule = async () => {
-  const response = await api.post("/optimize");
+const API_URL = "http://127.0.0.1:8000/api/v1";
+
+export async function optimizeSchedule() {
+  const response = await axios.post(`${API_URL}/optimize`);
   return response.data;
-};
+}

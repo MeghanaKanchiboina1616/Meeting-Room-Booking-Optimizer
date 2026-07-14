@@ -2,7 +2,8 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
+from pathlib import Path
+from dotenv import load_dotenv
 from alembic import context
 from backend.app.core.database import Base
 from backend.app.models import *
@@ -20,6 +21,17 @@ sys.path.append(
 # access to the values within the .ini file in use.
 config = context.config
 
+env_path = Path(__file__).resolve().parent.parent / "backend" / ".env"
+
+load_dotenv(env_path)
+
+print("ENV FILE:", env_path)
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
+
+config.set_main_option(
+    "sqlalchemy.url",
+    str(os.getenv("DATABASE_URL"))
+)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:

@@ -6,6 +6,8 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
+  Stack,
 } from "@mui/material";
 
 interface Meeting {
@@ -14,6 +16,7 @@ interface Meeting {
   organizer: string;
   participants: number;
   duration: number;
+  is_completed: boolean;
 
   preferences: {
     projector: boolean;
@@ -23,10 +26,20 @@ interface Meeting {
 
 interface Props {
   meetings: Meeting[];
+
+  onComplete: (
+    id: number
+  ) => void;
+
+  onDelete: (
+    id: number
+  ) => void;
 }
 
 export default function MeetingTable({
   meetings,
+  onComplete,
+  onDelete,
 }: Props) {
   return (
     <TableContainer component={Paper}>
@@ -35,26 +48,13 @@ export default function MeetingTable({
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-
-            <TableCell>
-              Title
-            </TableCell>
-
-            <TableCell>
-              Organizer
-            </TableCell>
-
-            <TableCell>
-              Participants
-            </TableCell>
-
-            <TableCell>
-              Duration
-            </TableCell>
-
-            <TableCell>
-              Preferences
-            </TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell>Organizer</TableCell>
+            <TableCell>Participants</TableCell>
+            <TableCell>Duration</TableCell>
+            <TableCell>Preferences</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
 
@@ -64,6 +64,7 @@ export default function MeetingTable({
               <TableRow
                 key={meeting.id}
               >
+
                 <TableCell>
                   {meeting.id}
                 </TableCell>
@@ -73,34 +74,71 @@ export default function MeetingTable({
                 </TableCell>
 
                 <TableCell>
-                  {
-                    meeting.organizer
-                  }
+                  {meeting.organizer}
                 </TableCell>
 
                 <TableCell>
-                  {
-                    meeting.participants
-                  }
+                  {meeting.participants}
                 </TableCell>
 
                 <TableCell>
-                  {
-                    meeting.duration
-                  } min
+                  {meeting.duration}
+                  {" "}min
                 </TableCell>
 
                 <TableCell>
-                  {meeting
-                    .preferences
+                  {meeting.preferences
                     ?.projector &&
                     "📽️ "}
 
-                  {meeting
-                    .preferences
+                  {meeting.preferences
                     ?.preferred_building ||
                     "Any"}
                 </TableCell>
+
+                <TableCell>
+                  {meeting.is_completed
+                    ? "Completed"
+                    : "Pending"}
+                </TableCell>
+
+                <TableCell>
+
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                  >
+
+                    {!meeting.is_completed ? (
+                      <Button
+                        color="success"
+                        variant="contained"
+                        onClick={() =>
+                          onComplete(
+                            meeting.id
+                          )
+                        }
+                      >
+                        Complete
+                      </Button>
+                    ) : (
+                      <Button
+                        color="error"
+                        variant="contained"
+                        onClick={() =>
+                          onDelete(
+                            meeting.id
+                          )
+                        }
+                      >
+                        Delete
+                      </Button>
+                    )}
+
+                  </Stack>
+
+                </TableCell>
+
               </TableRow>
             )
           )}
